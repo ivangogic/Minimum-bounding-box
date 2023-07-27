@@ -34,9 +34,7 @@ In addition to packages above, install `g++`, `libglfw3-dev`, and
 Navigate to source root folder and run
 * `g++ *.cpp -I ./utility/ utility/*.cpp -lGL -lGLEW -lglfw -std=c++17 -O1 -o Minimum_bounding_box`
 
-### Using CMake
-##### (works on macOS, use brew to install glew and glfw)
-\
+### Using CMake (Linux and macOS)
 Install the `cmake` package.
 
 Navigate to source root folder and run 

@@ -8,6 +8,8 @@
 #define CONVHULL_3D_ENABLE
 #include "convhull_3d.h"
 
+#include "libgdiam-1.0.3/gdiam.hpp"
+
 #include "mbb.h"
 
 using namespace std;
@@ -352,21 +354,25 @@ void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &
     free(faceIndices);
 
 // Find two most distant points and initialize obb orientation
-    int index1, index2;
-    ftype maxDist = 0;
-    for(int i = 0; i < convexHull.size(); i++) {
-        for(int j = i + 1; j < convexHull.size(); j++) {
-            ftype tempDist = convexHull[i].dist3D(convexHull[j]);
-            if(tempDist > maxDist) {
-                index1 = i;
-                index2 = j;
-                maxDist = tempDist;
-            }
-        }
+    GPointPair gpair;
+    gdiam_real *gpoints;
+    int num = convexHull.size();
+
+    gpoints = (gdiam_point) malloc(sizeof(gdiam_point_t) * num);
+    for (int ind = 0; ind < num; ind++) {
+        gpoints[ind * 3 + 0] = convexHull[ind].x;
+        gpoints[ind * 3 + 1] = convexHull[ind].y;
+        gpoints[ind * 3 + 2] = convexHull[ind].z;
     }
-    pt3 orientation = convexHull[index1] - convexHull[index2];
-    ftype volume = MAX;
+
+    gpair = gdiam_approx_diam_pair( (gdiam_real *) gpoints, num, 0.0);
+
+    pt3 orientation;
+    orientation.x = gpair.p[0] - gpair.q[0];
+    orientation.y = gpair.p[1] - gpair.q[1];
+    orientation.z = gpair.p[2] - gpair.q[2];
     normalize(orientation);
+    ftype volume = MAX;
 
 // Iterate through selected orientations
     orientedBoundingBox(convexHull, pt3(1, 0, 0), volume, lowerBase, upperBase);

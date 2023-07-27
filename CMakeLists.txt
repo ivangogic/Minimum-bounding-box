@@ -20,6 +20,8 @@ add_executable(
         utility/controls.h
         utility/controls.cpp
         convhull_3d.h
+        libgdiam-1.0.3/gdiam.hpp
+        libgdiam-1.0.3/gdiam.cpp
         mbb.h
         mbb.cpp)
 

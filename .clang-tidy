@@ -1,0 +1,13 @@
+Checks: >
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  portability-*,
+  modernize-use-nullptr,
+  modernize-use-override,
+  readability-container-size-empty
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '^(?!.*(convhull_3d|libgdiam-1\.0\.3)).*$'
+FormatStyle: file

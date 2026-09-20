@@ -1,6 +1,8 @@
 #ifndef MINIMUM_BOUNDING_BOX_MBB_H
 #define MINIMUM_BOUNDING_BOX_MBB_H
 
+#include <vector>
+
 typedef long double ftype;
 
 struct pt3 {
@@ -16,10 +18,6 @@ struct pt3 {
     pt3 rotate(ftype angle) const;
 };
 
-void mbbApproximation(
-        std::vector<pt3> &points,
-        std::vector<pt3> &lowerBase,
-        std::vector<pt3> &upperBase
-);
+void mbbApproximation(std::vector<pt3> &points, std::vector<pt3> &lowerBase, std::vector<pt3> &upperBase);
 
-#endif //MINIMUM_BOUNDING_BOX_MBB_H
+#endif // MINIMUM_BOUNDING_BOX_MBB_H

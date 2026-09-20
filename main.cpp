@@ -1,6 +1,6 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 #define GLFW_INCLUDE_GLCOREARB
 #include <GL/glew.h>
@@ -8,31 +8,33 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "mbb.h"
+#include "utility/controls.h"
 #include "utility/loadobj.h"
 #include "utility/loadshaders.h"
-#include "utility/controls.h"
-#include "mbb.h"
 
-GLFWwindow* window;
+GLFWwindow *window;
 
 glm::vec3 ptToVec3(struct pt3 point) {
     glm::vec3 result = glm::vec3(point.x, point.y, point.z);
     return result;
 }
 
-void calculateNormals(std::vector<glm::vec3>&vertices, std::vector<glm::vec3>&normals) {
+void calculateNormals(std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals) {
     normals.clear();
-    for(int i = 0; i < vertices.size(); i+= 3) {
-        glm::vec3 BMinusA = vertices[i+1] - vertices[i+0];
-        glm::vec3 CMinusA = vertices[i+2] - vertices[i+0];
+    for (int i = 0; i < vertices.size(); i += 3) {
+        glm::vec3 BMinusA = vertices[i + 1] - vertices[i + 0];
+        glm::vec3 CMinusA = vertices[i + 2] - vertices[i + 0];
         glm::vec3 dir = glm::cross(BMinusA, CMinusA);
         glm::vec3 normal = glm::normalize(dir);
-        normals.push_back(normal); normals.push_back(normal); normals.push_back(normal);
+        normals.push_back(normal);
+        normals.push_back(normal);
+        normals.push_back(normal);
     }
 }
 
-int main(int argc, char ** argv) {
-    if(not glfwInit()) {
+int main(int argc, char **argv) {
+    if (not glfwInit()) {
         return std::cout << "Failed to initialize GLFW" << std::endl, -1;
     }
 
@@ -40,18 +42,18 @@ int main(int argc, char ** argv) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    #ifdef __APPLE__
+#ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    #endif
+#endif
 
     window = glfwCreateWindow(1024, 768, "MBB", nullptr, nullptr);
-    if(window == nullptr) {
+    if (window == nullptr) {
         return glfwTerminate(), std::cout << "Failed to open GLFW window" << std::endl, -1;
     }
     glfwMakeContextCurrent(window);
 
     glewExperimental = true;
-    if(glewInit() != GLEW_OK) {
+    if (glewInit() != GLEW_OK) {
         return glfwTerminate(), std::cout << "Failed to initialize GLEW" << std::endl, -1;
     }
 
@@ -66,18 +68,18 @@ int main(int argc, char ** argv) {
     std::vector<glm::vec3> normals;
     std::vector<glm::vec3> tempPoints;
 
-    if(not loadObj(argc > 1 ? argv[1] : "teapot.obj", vertices, normals, tempPoints)) {
+    if (not loadObj(argc > 1 ? argv[1] : "teapot.obj", vertices, normals, tempPoints)) {
         return glfwTerminate(), -1;
     }
 
-    if(normals.empty()) {
+    if (normals.empty()) {
         calculateNormals(vertices, normals);
     }
 
     glm::vec3 lowerBoundary = tempPoints[0];
     glm::vec3 upperBoundary = tempPoints[0];
     std::vector<pt3> points;
-    for(auto v : tempPoints) {
+    for (auto v : tempPoints) {
         pt3 P(v.x, v.y, v.z);
         points.push_back(P);
         lowerBoundary.x = std::min(lowerBoundary.x, v.x);
@@ -98,20 +100,20 @@ int main(int argc, char ** argv) {
         glm::vec3 boxCenter = glm::vec3(0, 0, 0);
 
         std::cout << "Lower base:" << std::endl;
-        for(auto point : _lower) {
+        for (auto point : _lower) {
             point.show();
             boxCenter += ptToVec3(point);
             lower.push_back(ptToVec3(point));
         }
         std::cout << "Upper base:" << std::endl;
-        for(auto point : _upper) {
+        for (auto point : _upper) {
             point.show();
             boxCenter += ptToVec3(point);
             upper.push_back(ptToVec3(point));
         }
 
         boxCenter /= 8;
-        for(int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++) {
             glm::vec3 centerToPoint;
             centerToPoint = glm::normalize(lower[i] - boxCenter);
             centerToPoint /= 1000;
@@ -125,20 +127,44 @@ int main(int argc, char ** argv) {
     std::vector<glm::vec3> boxVertices;
     std::vector<glm::vec3> boxNormals;
 
-    boxVertices.push_back(lower[0]); boxVertices.push_back(lower[1]); boxVertices.push_back(lower[2]);
-    boxVertices.push_back(lower[0]); boxVertices.push_back(lower[2]); boxVertices.push_back(lower[3]);
-    boxVertices.push_back(upper[0]); boxVertices.push_back(upper[2]); boxVertices.push_back(upper[1]);
-    boxVertices.push_back(upper[0]); boxVertices.push_back(upper[3]); boxVertices.push_back(upper[2]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(lower[1]);
+    boxVertices.push_back(lower[2]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(lower[2]);
+    boxVertices.push_back(lower[3]);
+    boxVertices.push_back(upper[0]);
+    boxVertices.push_back(upper[2]);
+    boxVertices.push_back(upper[1]);
+    boxVertices.push_back(upper[0]);
+    boxVertices.push_back(upper[3]);
+    boxVertices.push_back(upper[2]);
 
-    boxVertices.push_back(lower[2]); boxVertices.push_back(lower[1]); boxVertices.push_back(upper[2]);
-    boxVertices.push_back(lower[1]); boxVertices.push_back(upper[1]); boxVertices.push_back(upper[2]);
-    boxVertices.push_back(lower[3]); boxVertices.push_back(upper[3]); boxVertices.push_back(lower[0]);
-    boxVertices.push_back(lower[0]); boxVertices.push_back(upper[3]); boxVertices.push_back(upper[0]);
+    boxVertices.push_back(lower[2]);
+    boxVertices.push_back(lower[1]);
+    boxVertices.push_back(upper[2]);
+    boxVertices.push_back(lower[1]);
+    boxVertices.push_back(upper[1]);
+    boxVertices.push_back(upper[2]);
+    boxVertices.push_back(lower[3]);
+    boxVertices.push_back(upper[3]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(upper[3]);
+    boxVertices.push_back(upper[0]);
 
-    boxVertices.push_back(lower[1]); boxVertices.push_back(lower[0]); boxVertices.push_back(upper[1]);
-    boxVertices.push_back(lower[0]); boxVertices.push_back(upper[0]); boxVertices.push_back(upper[1]);
-    boxVertices.push_back(lower[2]); boxVertices.push_back(upper[2]); boxVertices.push_back(lower[3]);
-    boxVertices.push_back(lower[3]); boxVertices.push_back(upper[2]); boxVertices.push_back(upper[3]);
+    boxVertices.push_back(lower[1]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(upper[1]);
+    boxVertices.push_back(lower[0]);
+    boxVertices.push_back(upper[0]);
+    boxVertices.push_back(upper[1]);
+    boxVertices.push_back(lower[2]);
+    boxVertices.push_back(upper[2]);
+    boxVertices.push_back(lower[3]);
+    boxVertices.push_back(lower[3]);
+    boxVertices.push_back(upper[2]);
+    boxVertices.push_back(upper[3]);
 
     calculateNormals(boxVertices, boxNormals);
 
@@ -177,7 +203,7 @@ int main(int argc, char ** argv) {
 
     glUseProgram(shaderProgramID);
 
-    glm::vec3 lightPos = glm::vec3(10,10,10);
+    glm::vec3 lightPos = glm::vec3(10, 10, 10);
 
     do {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -198,10 +224,10 @@ int main(int argc, char ** argv) {
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, normalBufferID);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
@@ -211,10 +237,10 @@ int main(int argc, char ** argv) {
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, boxVertexBufferID);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
         glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, boxNormalBufferID);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*) 0);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
         glDrawArrays(GL_TRIANGLES, 0, boxVertices.size());
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
@@ -222,7 +248,7 @@ int main(int argc, char ** argv) {
         glfwSwapBuffers(window);
         glfwPollEvents();
 
-    } while(not glfwWindowShouldClose(window));
+    } while (not glfwWindowShouldClose(window));
 
     glDeleteBuffers(1, &vertexBufferID);
     glDeleteBuffers(1, &normalBufferID);

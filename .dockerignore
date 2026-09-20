@@ -1,0 +1,15 @@
+.git
+.githooks
+build*
+cmake-build*
+Debug
+Release
+RelWithDebInfo
+MinSizeRel
+vcpkg_installed
+.vscode
+.idea
+*.exe
+*.dll
+*.pdb
+clang-tidy-report.txt

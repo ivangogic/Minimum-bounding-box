@@ -45,6 +45,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build
+debug
+release
+vcpkg*
 
 # Environment
 .idea

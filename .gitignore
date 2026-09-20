@@ -47,7 +47,7 @@ _deps
 build
 debug
 release
-vcpkg*
+vcpkg_installed/
 
 # Environment
 .idea

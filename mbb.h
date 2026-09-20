@@ -1,6 +1,8 @@
 #ifndef MINIMUM_BOUNDING_BOX_MBB_H
 #define MINIMUM_BOUNDING_BOX_MBB_H
 
+#include <vector>
+
 typedef long double ftype;
 
 struct pt3 {

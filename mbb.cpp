@@ -331,6 +331,7 @@ void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &
         chIndexes.insert(faceIndices[i]);
     }
     vector<pt3> convexHull;
+    convexHull.reserve(chIndexes.size());
     for (auto u : chIndexes) {
         convexHull.push_back(points[u]);
     }

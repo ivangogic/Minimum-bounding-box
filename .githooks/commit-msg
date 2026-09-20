@@ -1,0 +1,13 @@
+#!/bin/sh
+
+message_file=$1
+subject=$(head -n 1 "$message_file")
+
+pattern='^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\([a-z0-9._-]+\))?: .+'
+
+if ! printf '%s\n' "$subject" | grep -Eq "$pattern"; then
+    echo "Commit rejected: invalid commit message."
+    echo "Expected format: type: description"
+    echo "Example: build: extract MBB algorithm into library"
+    exit 1
+fi

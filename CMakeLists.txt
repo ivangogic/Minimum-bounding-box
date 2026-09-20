@@ -12,19 +12,38 @@ find_package(GLEW REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
 
-add_executable(
-        Minimum_bounding_box main.cpp
-        utility/loadshaders.h
-        utility/loadshaders.cpp
-        utility/loadobj.h
-        utility/loadobj.cpp
-        utility/controls.h
-        utility/controls.cpp
-        convhull_3d.h
-        libgdiam-1.0.3/gdiam.hpp
-        libgdiam-1.0.3/gdiam.cpp
-        mbb.h
-        mbb.cpp)
+add_library(mbb_core STATIC
+    mbb.cpp
+    mbb.h
+    convhull_3d.h
+    libgdiam-1.0.3/gdiam.hpp
+    libgdiam-1.0.3/gdiam.cpp
+)
+
+target_include_directories(mbb_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(mbb_core PRIVATE
+        /permissive-
+        $<$<CONFIG:Release>:/O1>
+    )
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    target_compile_options(mbb_core PRIVATE
+        $<$<CONFIG:Release>:-O1>
+    )
+endif()
+
+add_executable(Minimum_bounding_box
+    main.cpp
+    utility/loadshaders.h
+    utility/loadshaders.cpp
+    utility/loadobj.h
+    utility/loadobj.cpp
+    utility/controls.h
+    utility/controls.cpp
+)
 
 target_compile_definitions(Minimum_bounding_box PRIVATE
     GLM_ENABLE_EXPERIMENTAL
@@ -48,6 +67,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
 endif()
 
 target_link_libraries(Minimum_bounding_box PRIVATE
+    mbb_core
     OpenGL::GL
     GLEW::GLEW
     glfw

@@ -29,6 +29,7 @@
 *.exe
 *.out
 *.app
+*.pdb
 Minimum_bounding_box
 
 # Cmake
@@ -44,7 +45,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-build
+build*
 debug
 release
 vcpkg_installed/

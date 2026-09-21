@@ -59,3 +59,10 @@ cmake --build build
 
 Use `-DCMAKE_BUILD_TYPE=Debug` in a separate build directory for debugging.
 After a successful build, run the program as described above.
+
+## Architecture
+
+The diagram shows the application, the `mbb_core` library and their dependencies.
+PlantUML source: [docs/architecture.puml](docs/architecture.puml).
+
+![Component diagram](docs/architecture.png)

@@ -1018,6 +1018,7 @@ GPointPair   gdiam_approx_diam( gdiam_point  * start, int  size,
 
     pair = pAlg->getDiameter();
 
+    pAlg->term();
     delete  pAlg;
 
     return  pair;

@@ -358,6 +358,7 @@ void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &
     orientation.y = gpair.p[1] - gpair.q[1];
     orientation.z = gpair.p[2] - gpair.q[2];
     normalize(orientation);
+    free(gpoints);
     ftype volume = MAX;
 
     // Iterate through selected orientations

@@ -223,18 +223,6 @@ void orientedBoundingBox(vector<pt3> points, pt3 orientation, ftype &volume, vec
     for (int i = 1; i < lowerCH2D.size() - 1; i++) {
         CH2D.push_back(lowerCH2D[i]);
         tempInd = CH2D.size() - 1;
-        if (CH2D[tempInd].x < xMin) {
-            xMin = CH2D[tempInd].x;
-            caliperIndex[3] = tempInd;
-        }
-        if (CH2D[tempInd].x > xMax) {
-            xMax = CH2D[tempInd].x;
-            caliperIndex[1] = tempInd;
-        }
-        if (CH2D[tempInd].y > yMax) {
-            yMax = CH2D[tempInd].y;
-            caliperIndex[0] = tempInd;
-        }
         if (CH2D[tempInd].y < yMin) {
             yMin = CH2D[tempInd].y;
             caliperIndex[2] = tempInd;
@@ -312,7 +300,7 @@ void orientedBoundingBox(vector<pt3> points, pt3 orientation, ftype &volume, vec
     }
 }
 
-void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &upperBase) {
+ftype mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &upperBase) {
     // Find convexhull
     int nVertices = points.size();
     ch_vertex *vertices;
@@ -403,4 +391,5 @@ void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &
         }
     }
     cout << "MBB volume: " << volume << endl;
+    return volume;
 }

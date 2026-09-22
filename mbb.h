@@ -18,6 +18,6 @@ struct pt3 {
     pt3 rotate(ftype angle) const;
 };
 
-void mbbApproximation(std::vector<pt3> &points, std::vector<pt3> &lowerBase, std::vector<pt3> &upperBase);
+ftype mbbApproximation(std::vector<pt3> &points, std::vector<pt3> &lowerBase, std::vector<pt3> &upperBase);
 
 #endif // MINIMUM_BOUNDING_BOX_MBB_H

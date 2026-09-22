@@ -14,7 +14,6 @@ glm::mat4 ProjectionMatrix;
 glm::vec3 cameraPosition = glm::vec3(0, 0, 10);
 glm::mat4 getViewMatrix() { return ViewMatrix; }
 glm::mat4 getProjectionMatrix() { return ProjectionMatrix; }
-glm::vec3 getCameraPosition() { return cameraPosition; }
 
 glm::vec3 up = glm::vec3(0, 1, 0);
 

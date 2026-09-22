@@ -300,7 +300,7 @@ void orientedBoundingBox(vector<pt3> points, pt3 orientation, ftype &volume, vec
     }
 }
 
-void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &upperBase) {
+ftype mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &upperBase) {
     // Find convexhull
     int nVertices = points.size();
     ch_vertex *vertices;
@@ -391,4 +391,5 @@ void mbbApproximation(vector<pt3> &points, vector<pt3> &lowerBase, vector<pt3> &
         }
     }
     cout << "MBB volume: " << volume << endl;
+    return volume;
 }

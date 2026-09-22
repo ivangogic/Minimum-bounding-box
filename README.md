@@ -60,6 +60,18 @@ cmake --build build
 Use `-DCMAKE_BUILD_TYPE=Debug` in a separate build directory for debugging.
 After a successful build, run the program as described above.
 
+## Regression test
+
+The headless regression test uses `tetrahedron.obj` and fails if the calculated
+bounding-box volume exceeds the versioned baseline. It runs in CI and can be run
+manually with:
+
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON
+cmake --build build --target mbb_volume_regression_test
+ctest --test-dir build -R '^mbb_volume_regression_test$' --output-on-failure
+```
+
 ## Architecture
 
 The diagram shows the application, the `mbb_core` library and their dependencies.

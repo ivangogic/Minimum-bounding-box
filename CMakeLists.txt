@@ -73,3 +73,19 @@ target_link_libraries(Minimum_bounding_box PRIVATE
     glfw
     glm::glm
 )
+
+include(CTest)
+
+if(BUILD_TESTING)
+    add_executable(mbb_volume_regression_test
+        tests/mbb_volume_regression_test.cpp
+    )
+    set_target_properties(mbb_volume_regression_test PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests
+    )
+    target_link_libraries(mbb_volume_regression_test PRIVATE mbb_core)
+    add_test(
+        NAME mbb_volume_regression_test
+        COMMAND mbb_volume_regression_test ${CMAKE_CURRENT_SOURCE_DIR}/tetrahedron.obj
+    )
+endif()
